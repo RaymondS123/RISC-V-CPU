@@ -12,13 +12,13 @@
 //4'b1010 LUI
 
 module alu (
-    input [31:0] a;
-    input [31:0] b;
-    input [3:0] alu_ctrl;
-    output reg [31:0] result;
-    output wire zero;
-    output wire negative;
-    output wire overflow;
+    input [31:0] a,
+    input [31:0] b,
+    input [3:0] alu_ctrl,
+    output reg [31:0] result,
+    output wire zero,
+    output wire negative,
+    output wire overflow
 );
 
 //shift amount
@@ -34,11 +34,12 @@ always @(*) begin
         4'b0100: result = a ^ b;
         4'b0101: result = a << shift_bit;
         4'b0110: result = a >> shift_bit;
-        4'b0111: result = $signed(a) >> shift_bit;
+        4'b0111: result = $signed(a) >>> shift_bit;
         4'b1000: result = {31'b0, ($signed(a) < $signed(b))};
         4'b1001: result = {31'b0, (a < b)};
         4'b1010: result = b;
         default: result = 32'b0;
+    endcase
 end
 
 //status flags
